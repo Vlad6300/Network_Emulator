@@ -1,2 +1,2 @@
 # Network_Emulator
-A lightweight network emulator for sdns
+A lightweight network emulator for SDNs and NFVs
