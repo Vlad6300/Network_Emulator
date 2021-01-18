@@ -1,0 +1,97 @@
+infrastructure:
+    routers:
+        - router: "R1"
+          image: "host"
+              
+    bridges:
+        bridge:
+         - "S1"
+         - "S2"
+
+                
+    hosts:
+        - host: "H1"
+          type: "passive"
+          image: "host"
+          routes:
+            - destination_network: "192.168.1.0/24"
+              gateway: "192.168.0.254"
+              interface: "eth0"
+
+            
+        - host: "H2"
+          type: "passive"
+          image: "host"
+          routes:
+            - destination_network: "192.168.1.0/24"
+              gateway: "192.168.0.254"
+              interface: "eth0"
+
+            
+        - host: "H3"
+          type: "sniffer"
+          image: "host"
+          restrictions:
+            - name: "Targetsourcerange"
+              argument: "192.168.1.0 0.0.0.255"
+
+            - name: "targetdestination"
+              argument: "192.168.1.1"
+
+          routes:
+            - destination_network: "192.168.0.0/24"
+              gateway: "192.168.1.254"
+              interface: "eth0"
+            
+        - host: "H4"
+          type: "sniffer"
+          image: "host"
+          restrictions:
+            - name: "targetsource"
+              argument: "192.168.0.1"
+
+            - name: "targetsource"
+              argument: "192.168.0.2"
+
+            - name: "targetdestination"
+              argument: "192.168.1.2"
+
+            - name: "targetprotocol"
+              argument: "1"
+
+          routes:
+            - destination_network: "192.168.0.0/24"
+              gateway: "192.168.1.254"
+              interface: "eth0"
+
+    links:
+        - host: "H1"
+          bridge: "S1"
+          interface: "eth0"
+          ip: "192.168.0.1/24"
+          
+        - host: "H2"
+          bridge: "S1"
+          interface: "eth0"
+          ip: "192.168.0.2/24"
+
+        - host: "H3"
+          bridge: "S2"
+          interface: "eth0"
+          ip: "192.168.1.1/24"
+
+        - host: "H4"
+          bridge: "S2"
+          interface: "eth0"
+          ip: "192.168.1.2/24"
+
+        - host: "R1"
+          bridge: "S1"
+          interface: "eth0"
+          ip: "192.168.0.254/24"
+          
+
+        - host: "R1"
+          bridge: "S2"
+          interface: "eth1"
+          ip: "192.168.1.254/24"
